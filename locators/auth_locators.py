@@ -1,12 +1,6 @@
 """
 Локаторы элементов, связанных с авторизацией и регистрацией пользователя.
 
-ВАЖНО: локаторы построены на основании видимого текста кнопок/заголовков
-и стандартных атрибутов полей ввода (name / placeholder), так как точная
-разметка сайта не проверялась в headless-окружении без браузера.
-Перед первым запуском сверь их с реальным DOM через Chrome DevTools
-(клик правой кнопкой на элементе -> "Просмотреть код") и при необходимости
-поправь ТОЛЬКО в этом файле — тесты менять не нужно.
 """
 
 from selenium.webdriver.common.by import By
@@ -26,7 +20,6 @@ class HeaderLocators:
     USER_AVATAR = (By.CSS_SELECTOR, "svg.svgSmall")
 
     # Имя пользователя рядом с аватаром.
-    # На сайте отображается как "User." (с точкой на конце) в теге <h3 class="profileText name">.
     USER_NAME_LABEL = (By.CSS_SELECTOR, "h3.profileText")
 
 
@@ -42,25 +35,26 @@ class AuthModalLocators:
     # Поля формы регистрации
     REGISTER_EMAIL_INPUT = (By.CSS_SELECTOR, "input[name='email']")
     REGISTER_PASSWORD_INPUT = (By.CSS_SELECTOR, "input[name='password']")
-    REGISTER_REPEAT_PASSWORD_INPUT = (By.CSS_SELECTOR, "input[name='submitPassword']")
+    REGISTER_REPEAT_PASSWORD_INPUT = (By.CSS_SELECTOR, "input[placeholder='Повторите пароль']")
     REGISTER_SUBMIT_BUTTON = (By.XPATH, "//button[contains(., 'Создать аккаунт')]")
 
-    # Сообщение об ошибке под полем Email
+    # Сообщение об ошибке под полем Email.
     EMAIL_ERROR_MESSAGE = (
         By.XPATH,
-        "//input[@name='email']/ancestor::*[contains(@class, 'field') or contains(@class, 'form-group')]"
-        "//*[contains(text(), 'Ошибка')]",
+        "//div[contains(@class, 'input_inputError')][.//input[@name='email']]"
+        "/parent::div/parent::div/span[contains(@class, 'input_span')]",
     )
 
-    # Признак ошибки (подсветка красным) для полей email/пароль/повтор пароля
-    EMAIL_FIELD_ERROR_STATE = (By.CSS_SELECTOR, "input[name='email'].error, input[name='email'][class*='invalid']")
+    # Признак ошибки (подсветка красным).
+    EMAIL_FIELD_ERROR_STATE = (
+        By.XPATH, "//div[contains(@class, 'input_inputError')][.//input[@name='email']]"
+    )
     PASSWORD_FIELD_ERROR_STATE = (
-        By.CSS_SELECTOR,
-        "input[name='password'].error, input[name='password'][class*='invalid']",
+        By.XPATH, "//div[contains(@class, 'input_inputError')][.//input[@name='password']]"
     )
     REPEAT_PASSWORD_FIELD_ERROR_STATE = (
-        By.CSS_SELECTOR,
-        "input[name='submitPassword'].error, input[name='submitPassword'][class*='invalid']",
+        By.XPATH,
+        "//div[contains(@class, 'input_inputError')][.//input[@placeholder='Повторите пароль']]",
     )
 
 

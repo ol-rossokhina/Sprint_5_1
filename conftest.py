@@ -12,18 +12,9 @@ FAILURES_DIR = Path(__file__).parent / "test-failures"
 
 # --- Путь к chromedriver ---------------------------------------------------
 # Если Selenium Manager не может сам скачать chromedriver (нет сети,
-# антивирус/прокси блокируют скачивание и т.п.), укажи путь к заранее
-# скачанному chromedriver.exe ОДНИМ из двух способов:
-#
-# Способ 1 (самый надёжный, не зависит от переменных окружения):
-#   впиши путь прямо сюда, например:
-#   CHROMEDRIVER_PATH = r"C:\webdrivers\chromedriver.exe"
-#
-# Способ 2: задать переменную окружения CHROMEDRIVER_PATH перед запуском
-# pytest (в той же сессии терминала):
-#   PowerShell: $env:CHROMEDRIVER_PATH="C:\webdrivers\chromedriver.exe"
-#   cmd:        set CHROMEDRIVER_PATH=C:\webdrivers\chromedriver.exe
-#   Linux/macOS: export CHROMEDRIVER_PATH=/usr/local/bin/chromedriver
+# антивирус/прокси блокируют скачивание (не знаю, по какой причине у меня не получилось) и т.п.), указала путь к заранее
+# скачанному chromedriver.exe через переменную CHROMEDRIVER_PATH
+
 CHROMEDRIVER_PATH = r"C:\Users\Rossokhina Olga\chromedriver-win64 (1)\chromedriver-win64\chromedriver.exe"
 
 

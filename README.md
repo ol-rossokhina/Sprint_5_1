@@ -14,7 +14,7 @@
 ## Структура проекта
 
 ```
-qa-desk-autotests/
+Sprint_5/
 ├── conftest.py              # общие фикстуры: driver, генерация email, registered_user
 ├── locators/
 │   ├── auth_locators.py     # локаторы шапки сайта, форм входа/регистрации
@@ -42,7 +42,7 @@ qa-desk-autotests/
 
 ```bash
 python -m venv venv
-source venv/bin/activate   # Windows: venv\Scripts\activate
+source venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
@@ -79,10 +79,3 @@ pytest -v
 - Вместо `time.sleep()` и `implicitly_wait()` используются явные ожидания
   (`WebDriverWait`) из `utils/waits.py`.
 
-## Важное примечание по локаторам
-
-Локаторы в `locators/` построены на основе видимого текста элементов
-(кнопки, заголовки) и стандартных атрибутов полей (`name`). Перед первым
-запуском рекомендуется свериться с реальной разметкой сайта через
-Chrome DevTools и при необходимости скорректировать локаторы — точечно,
-только в файлах модуля `locators`, не затрагивая сами тесты.
