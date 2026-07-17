@@ -74,10 +74,11 @@ def registered_user(driver, generate_email):
     нужен уже существующий в системе аккаунт (логин, повторная
     регистрация, логаут, создание объявления).
     """
+    from data.auth_data import VALID_PASSWORD
     from locators.auth_locators import AuthModalLocators, HeaderLocators
     from utils.waits import click, wait_clickable
 
-    password = "Qwerty123!"
+    password = VALID_PASSWORD
 
     click(driver, HeaderLocators.LOGIN_OR_REGISTER_BUTTON)
     click(driver, AuthModalLocators.NO_ACCOUNT_BUTTON)

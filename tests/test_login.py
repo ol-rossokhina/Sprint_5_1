@@ -1,3 +1,4 @@
+from data.auth_data import EXPECTED_USER_NAME
 from locators.auth_locators import AuthModalLocators, HeaderLocators
 from utils.waits import click, wait_clickable, wait_visible
 
@@ -17,6 +18,6 @@ class TestLogin:
 
         actual_user_name = wait_visible(driver, HeaderLocators.USER_NAME_LABEL).text
 
-        assert actual_user_name == "User.", (
-            f"Ожидалось имя пользователя 'User.', фактическое значение: '{actual_user_name}'"
+        assert actual_user_name == EXPECTED_USER_NAME, (
+            f"Ожидалось имя пользователя '{EXPECTED_USER_NAME}', фактическое значение: '{actual_user_name}'"
         )

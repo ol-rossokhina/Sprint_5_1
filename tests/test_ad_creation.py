@@ -1,14 +1,9 @@
 import uuid
 
+from data.ad_data import AD_CATEGORY, AD_CITY, AD_CONDITION_VALUE, AD_DESCRIPTION, AD_PRICE, AD_TITLE_PREFIX
 from locators.ad_locators import CreateAdFormLocators, ProfileLocators
 from locators.auth_locators import HeaderLocators, NotAuthorizedModalLocators
 from utils.waits import click, wait_clickable, wait_visible
-
-AD_DESCRIPTION = "Автотест: описание товара"
-AD_PRICE = "1000"
-AD_CATEGORY = "Книги"
-AD_CITY = "Санкт-Петербург"
-AD_CONDITION_VALUE = "Б/У"
 
 
 class TestAdCreation:
@@ -25,7 +20,7 @@ class TestAdCreation:
         )
 
     def test_create_ad_by_authorized_user(self, driver, registered_user):
-        ad_title = f"Автотест объявление {uuid.uuid4().hex[:8]}"
+        ad_title = f"{AD_TITLE_PREFIX} {uuid.uuid4().hex[:8]}"
 
         click(driver, HeaderLocators.PLACE_AD_BUTTON)
 
@@ -42,6 +37,13 @@ class TestAdCreation:
         click(driver, CreateAdFormLocators.condition_radio_by_value(AD_CONDITION_VALUE))
 
         click(driver, CreateAdFormLocators.PUBLISH_BUTTON)
+
+        # После публикации сайт сам асинхронно редиректит на главную страницу.
+        # Дожидаемся, что этот редирект точно завершился (шапка главной
+        # страницы отрисовалась), прежде чем кликать по аватару — иначе
+        # клик по профилю может произойти раньше и быть перезаписан
+        # более поздним редиректом от самой публикации.
+        wait_visible(driver, HeaderLocators.PLACE_AD_BUTTON)
 
         click(driver, ProfileLocators.PROFILE_LINK)
 
