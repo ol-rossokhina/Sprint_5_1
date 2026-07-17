@@ -1,36 +1,10 @@
-import os
 import uuid
-from pathlib import Path
 
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
 
-BASE_URL = "https://qa-desk.education-services.ru/"
-FAILURES_DIR = Path(__file__).parent / "test-failures"
-
-# --- Путь к chromedriver ---------------------------------------------------
-# Если Selenium Manager не может сам скачать chromedriver (нет сети,
-# антивирус/прокси блокируют скачивание (не знаю, по какой причине у меня не получилось) и т.п.), указала путь к заранее
-# скачанному chromedriver.exe через переменную CHROMEDRIVER_PATH
-
-CHROMEDRIVER_PATH = r"C:\Users\Rossokhina Olga\chromedriver-win64 (1)\chromedriver-win64\chromedriver.exe"
-
-
-def _build_chrome_service() -> Service | None:
-    if not CHROMEDRIVER_PATH:
-        return None
-
-    driver_path = Path(CHROMEDRIVER_PATH)
-    if not driver_path.is_file():
-        raise FileNotFoundError(
-            f"CHROMEDRIVER_PATH указывает на несуществующий файл: '{CHROMEDRIVER_PATH}'. "
-            "Проверь, что путь указывает именно на chromedriver.exe (после распаковки архива), "
-            "а не на папку или на .zip."
-        )
-
-    return Service(executable_path=str(driver_path))
+from utils.config import BASE_URL, FAILURES_DIR, build_chrome_service
 
 
 @pytest.fixture
@@ -42,7 +16,7 @@ def driver():
     chrome_options = Options()
     chrome_options.add_argument("--start-maximized")
 
-    chrome_service = _build_chrome_service()
+    chrome_service = build_chrome_service()
 
     if chrome_service:
         chrome_driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
