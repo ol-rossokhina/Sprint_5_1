@@ -1,4 +1,5 @@
 from data.auth_data import EXPECTED_FORM_ERROR_MESSAGE, EXPECTED_USER_NAME, INVALID_EMAIL, VALID_PASSWORD
+from helpers.email_helpers import generate_email
 from locators.auth_locators import AuthModalLocators, HeaderLocators
 from utils.waits import click, wait_clickable, wait_visible
 
@@ -7,11 +8,11 @@ from utils.waits import click, wait_clickable, wait_visible
 class TestRegistration:
     """Тесты на функциональность «Регистрация пользователя»."""
 
-    def test_successful_registration(self, driver, generate_email):
+    def test_successful_registration(self, driver):
         click(driver, HeaderLocators.LOGIN_OR_REGISTER_BUTTON)
         click(driver, AuthModalLocators.NO_ACCOUNT_BUTTON)
 
-        wait_clickable(driver, AuthModalLocators.REGISTER_EMAIL_INPUT).send_keys(generate_email)
+        wait_clickable(driver, AuthModalLocators.REGISTER_EMAIL_INPUT).send_keys(generate_email())
         driver.find_element(*AuthModalLocators.REGISTER_PASSWORD_INPUT).send_keys(VALID_PASSWORD)
         driver.find_element(*AuthModalLocators.REGISTER_REPEAT_PASSWORD_INPUT).send_keys(VALID_PASSWORD)
         click(driver, AuthModalLocators.REGISTER_SUBMIT_BUTTON)

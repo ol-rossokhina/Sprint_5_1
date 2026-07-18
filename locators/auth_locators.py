@@ -1,9 +1,9 @@
+from selenium.webdriver.common.by import By
+
 """
 Локаторы элементов, связанных с авторизацией и регистрацией пользователя.
 
 """
-
-from selenium.webdriver.common.by import By
 
 
 class HeaderLocators:

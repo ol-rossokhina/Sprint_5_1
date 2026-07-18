@@ -1,15 +1,15 @@
+import time
+
+from selenium.common.exceptions import StaleElementReferenceException, TimeoutException
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
 """
 Обёртки над явными ожиданиями Selenium (WebDriverWait).
 
 Вместо time.sleep() и implicitly_wait() везде используются явные
 ожидания конкретного условия с таймаутом.
 """
-
-import time
-
-from selenium.common.exceptions import StaleElementReferenceException, TimeoutException
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 
 DEFAULT_TIMEOUT = 10
 IGNORED_EXCEPTIONS = (StaleElementReferenceException,)

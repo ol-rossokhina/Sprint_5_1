@@ -1,5 +1,3 @@
-import uuid
-
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -30,18 +28,9 @@ def driver():
     chrome_driver.quit()
 
 
-@pytest.fixture
-def generate_email():
-    """
-    Генерирует уникальный email на каждый вызов, чтобы тесты регистрации
-    не конфликтовали с уже существующими в системе пользователями.
-    """
-    unique_part = uuid.uuid4().hex[:10]
-    return f"user_{unique_part}@example.com"
-
 
 @pytest.fixture
-def registered_user(driver, generate_email):
+def registered_user(driver):
     """
     Создаёт нового пользователя через форму регистрации и возвращает
     его учётные данные. Используется тестами, которым для проверки
@@ -49,22 +38,24 @@ def registered_user(driver, generate_email):
     регистрация, логаут, создание объявления).
     """
     from data.auth_data import VALID_PASSWORD
+    from helpers.email_helpers import generate_email
     from locators.auth_locators import AuthModalLocators, HeaderLocators
     from utils.waits import click, wait_clickable
 
+    email = generate_email()
     password = VALID_PASSWORD
 
     click(driver, HeaderLocators.LOGIN_OR_REGISTER_BUTTON)
     click(driver, AuthModalLocators.NO_ACCOUNT_BUTTON)
 
-    wait_clickable(driver, AuthModalLocators.REGISTER_EMAIL_INPUT).send_keys(generate_email)
+    wait_clickable(driver, AuthModalLocators.REGISTER_EMAIL_INPUT).send_keys(email)
     driver.find_element(*AuthModalLocators.REGISTER_PASSWORD_INPUT).send_keys(password)
     driver.find_element(*AuthModalLocators.REGISTER_REPEAT_PASSWORD_INPUT).send_keys(password)
     click(driver, AuthModalLocators.REGISTER_SUBMIT_BUTTON)
 
     wait_clickable(driver, HeaderLocators.USER_NAME_LABEL)
 
-    return {"email": generate_email, "password": password}
+    return {"email": email, "password": password}
 
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)

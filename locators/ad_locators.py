@@ -1,9 +1,9 @@
+from selenium.webdriver.common.by import By
+
 """
 Локаторы элементов формы создания объявления и страницы профиля пользователя.
 
 """
-
-from selenium.webdriver.common.by import By
 
 
 class CreateAdFormLocators:
