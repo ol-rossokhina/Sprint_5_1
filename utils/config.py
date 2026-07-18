@@ -1,8 +1,3 @@
-"""
-Конфигурация окружения для запуска тестов: базовый URL сервиса,
-путь для сохранения артефактов упавших тестов и настройка chromedriver.
-"""
-
 import os
 from pathlib import Path
 
@@ -15,7 +10,16 @@ BASE_URL = "https://qa-desk.education-services.ru/"
 FAILURES_DIR = Path(__file__).resolve().parent.parent / "test-failures"
 
 # --- Путь к chromedriver ---------------------------------------------------
-CHROMEDRIVER_PATH = r"C:\Users\Rossokhina Olga\chromedriver-win64 (1)\chromedriver-win64\chromedriver.exe"
+# Если Selenium Manager не может сам скачать chromedriver (нет сети,
+# антивирус/прокси блокируют скачивание и т.п.), укажи путь к заранее
+# скачанному chromedriver.exe через переменную окружения CHROMEDRIVER_PATH
+# перед запуском pytest (в той же сессии терминала). Абсолютный путь
+# НЕЛЬЗЯ хардкодить прямо в этом файле — он специфичен для конкретной
+# машины и не будет работать ни у кого другого (в том числе на CI):
+#   PowerShell:  $env:CHROMEDRIVER_PATH="C:\webdrivers\chromedriver.exe"
+#   cmd:         set CHROMEDRIVER_PATH=C:\webdrivers\chromedriver.exe
+#   Linux/macOS: export CHROMEDRIVER_PATH=/usr/local/bin/chromedriver
+CHROMEDRIVER_PATH = os.environ.get("CHROMEDRIVER_PATH")
 
 
 def build_chrome_service() -> Service | None:
